@@ -1,0 +1,2 @@
+/usr/bin/ar cr libCalFunctions.a  CMakeFiles/CalFunctions.dir/IOfile.cpp.o CMakeFiles/CalFunctions.dir/calibration.cpp.o
+/usr/bin/ranlib libCalFunctions.a
