@@ -1,0 +1,2 @@
+/home/ubuntu/Self_Car_with_CUDA/opencv_cvmat_convert/numpy-opencv-converter/build/CMakeFiles/np_opencv_converter.dir
+/home/ubuntu/Self_Car_with_CUDA/opencv_cvmat_convert/numpy-opencv-converter/build/CMakeFiles/np_opencv_module.dir
