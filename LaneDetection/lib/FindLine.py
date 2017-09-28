@@ -94,7 +94,6 @@ class FindLine:
 	y = [p[1] for p in point_list]
 	fit = np.polyfit(y, x, 1)
 	fit_fn = np.poly1d(fit)
-  
 	xmin = int(fit_fn(ymin))
 	xmax = int(fit_fn(ymax))
 	return [(xmin, ymin), (xmax, ymax)], fit_fn
