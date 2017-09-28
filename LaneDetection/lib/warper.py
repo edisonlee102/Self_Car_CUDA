@@ -3,16 +3,12 @@ import numpy as np
 
 
 class Warper:
-    def __init__(self):
+    def __init__(self, ImgSize):
         self.src = np.float32([
-            #[580, 460],
-            #[700, 460],
-            #[1040, 680],
-            #[260, 680],
-            [531, 468],
-            [771, 456],
-            [1073, 659],
-            [253, 670],
+            [int(0.415 * ImgSize[0]), int(0.65 * ImgSize[1])],
+            [int(0.602 * ImgSize[0]), int(0.633 * ImgSize[1])],
+            [int(0.838 * ImgSize[0]), int(0.915 * ImgSize[1])],
+            [int(0.198 * ImgSize[0]), int(0.93 * ImgSize[1])],
         ])
 
         self.dst = np.float32([
@@ -21,7 +17,6 @@ class Warper:
             [1040, 720],
             [260, 720],
         ])
-
         self.M = cv2.getPerspectiveTransform(self.src, self.dst)
         self.Minv = cv2.getPerspectiveTransform(self.dst, self.src)
 

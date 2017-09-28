@@ -5,9 +5,9 @@ import numpy as np
 import enviroment as env
 from warper import Warper as warp
 from FindLine import FindLine as LineDetector
-warper = warp()
-findLine = LineDetector()
-def Process_frame(image):
+#warper = warp()
+#findLine = LineDetector()
+def Process_frame(image, warper, findLine):
     image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     yellow_min = np.array([11, 100, 120])
     yellow_max = np.array([25, 255, 255])
@@ -38,11 +38,16 @@ def Process_frame(image):
 
 if __name__ == "__main__":
     cap = cv2.VideoCapture(env.video_path_2)
+    size = (int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)),   
+        int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)))
+    print ('Frame row:{}, col:{}'.format(size[0],size[1]))
+    warper = warp(size)
+    findLine = LineDetector(size)
     while(cap.isOpened()):
 	ret, frame = cap.read()
 	try:
 	    if ret:
-		Process_frame(frame)
+		Process_frame(frame, warper, findLine)
 	    if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
 	except:

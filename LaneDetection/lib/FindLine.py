@@ -2,14 +2,16 @@ import cv2
 import numpy as np
 from polyfitter import Polyfitter as curve_cal
 class FindLine:
-    def __init__(self):
-	self.curvtor = curve_cal()
+    def __init__(self, ImgSize):
+	self.curvtor = curve_cal(ImgSize)
 	# Hough transform parameters
 	self.rho = 1
 	self.theta = np.pi / 180
 	self.threshold = 15
 	self.min_line_length = 10
 	self.max_line_gap = 40
+	self.DrawLaneDepth = int(0.667 * ImgSize[1])
+	self.DrawPolyLaneDepth = int(0.64 * ImgSize[1])
 
     def draw_lines(self, img, lines, color=[0, 255, 0], thickness=3):
 	for line in lines:
@@ -54,8 +56,8 @@ class FindLine:
 	#left_points = left_points + [(x2, y2) for line in left_lines for x1,y1,x2,y2 in line]
 	#right_points = [(x1, y1) for line in right_lines for x1,y1,x2,y2 in line]
 	#right_points = right_points + [(x2, y2) for line in right_lines for x1,y1,x2,y2 in line]
-	left_vtx, left_fn = self.linear_regression(left_points, 480, img.shape[0])
-	right_vtx, right_fn = self.linear_regression(right_points, 480, img.shape[0])
+	left_vtx, left_fn = self.linear_regression(left_points, self.DrawLaneDepth, img.shape[0])
+	right_vtx, right_fn = self.linear_regression(right_points, self.DrawLaneDepth, img.shape[0])
 	left_curverad, right_curverad, car_pos = self.curvtor.measure_curve(left_fn, right_fn, img)
 	lane_curve = (left_curverad + right_curverad)/2.
 	if car_pos > 0: 
@@ -99,7 +101,7 @@ class FindLine:
 
     def Poly_drawLane(self, img, left_fn, right_fn):
 	color_warp = np.zeros_like(img).astype(np.uint8)
-	point_y = np.linspace(468, img.shape[0] - 1, img.shape[0])
+	point_y = np.linspace(self.DrawPolyLaneDepth, img.shape[0] - 1, img.shape[0])
 	left_point_x = [int(i) for i in left_fn(point_y)]
 	right_point_x = [int(i) for i in right_fn(point_y)]
 	'''left_point = map(list, zip(left_point_x, point_y))

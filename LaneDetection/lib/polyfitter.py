@@ -3,12 +3,12 @@ import numpy as np
 
 
 class Polyfitter:
-    def __init__(self):
+    def __init__(self, ImgSize):
         self.left_fit = None
         self.right_fit = None
         self.leftx = None
         self.rightx = None
-
+	self.size = ImgSize
     def polyfit(self, img):
         # if self.left_fit is None:
         return self.polyfit_sliding(img)
@@ -125,13 +125,13 @@ class Polyfitter:
         return (left_curverad + right_curverad) / 2, car_pos.round(2)
 
     def measure_curve(self, left_fit, right_fit, binary_warped, print_data = False):
-	ploty = np.linspace(480, binary_warped.shape[0]-1, binary_warped.shape[0] )
+	ploty = np.linspace(int(0.667*self.size[1]), binary_warped.shape[0]-1, binary_warped.shape[0] )
 	# Define y-value where we want radius of curvature
 	# I'll choose the maximum y-value, corresponding to the bottom of the image
 	y_eval = np.max(ploty)
     
-	ym_per_pix = 30.0/720 # meters per pixel in y dimension
-	xm_per_pix = 3.7/700 # meters per pixel in x dimension
+	ym_per_pix = 30.0/self.size[1] # meters per pixel in y dimension
+	xm_per_pix = 3.7/self.size[1] # meters per pixel in x dimension
     
 	#Define left and right lanes in pixels
 	#leftx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
@@ -155,7 +155,7 @@ class Polyfitter:
 	# Lane center as mid of left and right lane bottom
                             
 	lane_center = (left_lane_bottom + right_lane_bottom)/2.
-	center_image = 640
+	center_image = int(self.size[0]/2.)
 	center = (lane_center - center_image)*xm_per_pix #Convert to meters
     
 	if print_data == True:
